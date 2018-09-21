@@ -3,8 +3,10 @@ package cn.rsvptech.shopping.domain;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.Table;
 
 @Entity
+@Table(name = "t_goods")
 public class Goods {
 
     @Id
