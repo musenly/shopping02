@@ -55,7 +55,7 @@ public class ShoppingController {
             goodsRepository.save(new Goods(goodsid, getGoods(goodsid).getGoodsSn(), getGoods(goodsid).getGoodsName(),
                                     shopPrice, newGoodsStock));
 
-            ordersRepository.save(new Orders(null, userid, goodsid, number, amount));
+            ordersRepository.save(new Orders(userid, goodsid, number, amount));
         }
 
         returnInfo = new ReturnInfo(userid, goodsid, number, status);

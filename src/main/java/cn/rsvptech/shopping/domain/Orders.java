@@ -1,14 +1,13 @@
 package cn.rsvptech.shopping.domain;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Entity
+@Table(name = "t_orders")
 public class Orders {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer orderId;
     private Integer userId;
     private Integer goodsId;
@@ -17,8 +16,7 @@ public class Orders {
 
     public Orders() {}
 
-    public Orders(Integer orderId, Integer userId, Integer goodsId, Integer number, Integer amount) {
-        this.orderId = orderId;
+    public Orders(Integer userId, Integer goodsId, Integer number, Integer amount) {
         this.goodsId = goodsId;
         this.userId = userId;
         this.goodsId = goodsId;

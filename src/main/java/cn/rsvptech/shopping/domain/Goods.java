@@ -1,14 +1,13 @@
 package cn.rsvptech.shopping.domain;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Entity
+@Table(name = "t_goods")
 public class Goods {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer goodsId;
     private String goodsSn;
     private String goodsName;
