@@ -1,15 +1,18 @@
 package cn.rsvptech.shopping.controller;
 
-import cn.rsvptech.shopping.domain.Account;
-import cn.rsvptech.shopping.domain.Goods;
-import cn.rsvptech.shopping.domain.Orders;
-import cn.rsvptech.shopping.domain.ReturnInfo;
+import cn.rsvptech.shopping.domain.*;
 import cn.rsvptech.shopping.repository.AccountRepository;
 import cn.rsvptech.shopping.repository.GoodsRepository;
 import cn.rsvptech.shopping.repository.OrdersRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+import java.util.concurrent.atomic.AtomicLong;
 
 @RestController
 public class ShoppingController {
@@ -33,14 +36,16 @@ public class ShoppingController {
         return goods;
     }
 
+    //更新accout和goods表，并生成订单
     @RequestMapping("/buy")
-    public ReturnInfo save(Integer userid, Integer goodsid, Integer number) {
+    public ReturnInfo save(@RequestParam(name = "userid") Integer userId, @RequestParam(name = "goodid")
+                                Integer goodId, Integer number) {
 
         ReturnInfo returnInfo = null;
 
-        int balance = getAccount(userid).getBalance();
-        int shopPrice = getGoods(goodsid).getShopPrice();
-        int goodsStock = getGoods(goodsid).getGoodsStock();
+        int balance = getAccount(userId).getBalance();
+        int shopPrice = getGoods(goodId).getShopPrice();
+        int goodsStock = getGoods(goodId).getGoodsStock();
         int newBalance = balance - shopPrice * number;
         int newGoodsStock = goodsStock - number;
         int amount = shopPrice * number;
@@ -50,17 +55,39 @@ public class ShoppingController {
             status = 0;
             System.out.println("账户余额或库存不足");
         } else {
-            accountRepository.save(new Account(userid, (Integer)newBalance, (Integer)status));
+            accountRepository.save(new Account(userId, (Integer)newBalance, (Integer)status));
 
-            goodsRepository.save(new Goods(goodsid, getGoods(goodsid).getGoodsSn(), getGoods(goodsid).getGoodsName(),
+            goodsRepository.save(new Goods(userId, getGoods(goodId).getGoodsSn(), getGoods(goodId).getGoodsName(),
                                     shopPrice, newGoodsStock));
 
-            ordersRepository.save(new Orders(userid, goodsid, number, amount));
+            ordersRepository.save(new Orders(userId, goodId, number, amount));
         }
 
-        returnInfo = new ReturnInfo(userid, goodsid, number, status);
+        returnInfo = new ReturnInfo(userId, goodId, number, status);
 
         return returnInfo;
+    }
+
+    @RequestMapping(name = "/Summary")
+    public Summary getSummary() {
+        List<Orders> listOrders = ordersRepository.findAll();
+        Set<Integer> setUsers = new HashSet<>();
+        AtomicLong amount = new AtomicLong();
+        AtomicLong number = new AtomicLong();
+
+        for (Orders order : listOrders) {
+            setUsers.add(order.getUserId());
+            amount.addAndGet(order.getAmount());
+            number.addAndGet(order.getNumber());
+        }
+
+        Summary summary = new Summary();
+        summary.setAllOrderId(listOrders.size());
+        summary.setAllUserId(setUsers.size());
+        summary.setAllAmount(amount.get());
+        summary.setAllBuyShopNum(number.get());
+
+        return summary;
     }
 
 }

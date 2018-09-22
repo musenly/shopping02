@@ -1,26 +1,26 @@
 package cn.rsvptech.shopping.domain;
 
 public class ReturnInfo {
-    private Integer userId;
+    private Integer usersId;
     private Integer goodsId;
     private Integer number;
     private Integer status;
 
     public ReturnInfo() {}
 
-    public ReturnInfo(Integer userId, Integer goodsId, Integer number, Integer status) {
-        this.userId = userId;
+    public ReturnInfo(Integer usersId, Integer goodsId, Integer number, Integer status) {
+        this.usersId = usersId;
         this.goodsId = goodsId;
         this.number = number;
         this.status = status;
     }
 
-    public Integer getUserId() {
-        return userId;
+    public Integer getUsersId() {
+        return usersId;
     }
 
-    public void setUserId(Integer userId) {
-        this.userId = userId;
+    public void setUsersId(Integer usersId) {
+        this.usersId = usersId;
     }
 
     public Integer getGoodsId() {

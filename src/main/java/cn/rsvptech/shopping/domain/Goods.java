@@ -1,6 +1,11 @@
 package cn.rsvptech.shopping.domain;
 
+
 import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.Table;
 
 @Entity
 @Table(name = "t_goods")
@@ -8,10 +13,15 @@ public class Goods {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "goodsId")
     private Integer goodsId;
+    @Column(name = "goodsSn")
     private String goodsSn;
+    @Column(name = "goodsName")
     private String goodsName;
+    @Column(name = "shopPrice")
     private Integer shopPrice;
+    @Column(name = "goodsStock")
     private Integer goodsStock;
 
     public Goods() {}

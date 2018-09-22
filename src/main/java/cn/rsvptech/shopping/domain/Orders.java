@@ -8,10 +8,15 @@ public class Orders {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "orderId")
     private Integer orderId;
+    @Column(name = "userId")
     private Integer userId;
+    @Column(name = "goodsId")
     private Integer goodsId;
-    private Integer Number;
+    @Column(name = "Number")
+    private Integer number;
+    @Column(name = "amount")
     private Integer amount;
 
     public Orders() {}
@@ -20,7 +25,7 @@ public class Orders {
         this.goodsId = goodsId;
         this.userId = userId;
         this.goodsId = goodsId;
-        Number = number;
+        this.number= number;
         this.amount = amount;
     }
 
@@ -49,11 +54,11 @@ public class Orders {
     }
 
     public Integer getNumber() {
-        return Number;
+        return number;
     }
 
     public void setNumber(Integer number) {
-        Number = number;
+        number = number;
     }
 
     public Integer getAmount() {

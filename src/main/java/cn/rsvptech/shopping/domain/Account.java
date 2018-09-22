@@ -9,8 +9,11 @@ public class Account {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "userId")
     private Integer userId;
+    @Column(name = "balance")
     private Integer balance;
+    @Column(name = "status")
     private Integer status;
 
     public Account(){}
